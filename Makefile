@@ -10,6 +10,7 @@ test: server
 	bash test_server.sh
 	
 deploy: all test clean
+	git status
 	read -r -p 'Commit message: ' DESC; \
 	git add .; \
 	git add -u; \
