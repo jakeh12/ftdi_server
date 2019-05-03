@@ -45,12 +45,20 @@ REPLY=`echo "$STIMULUS" | nc -w $NC_TIMEOUT $IP $PORT`
 # print the server reply
 echo "$REPLY"
 
-if [ "$REPLY" == "$EXPECTED" ]
-then
-	echo_good "PASSED"
-else
-	echo_bad "FAILED"
+# check the server reply
+PASSED=0
+if [ "$REPLY" = "$EXPECTED" ]; then
+	PASSED=1
 fi
 
 # close the server
 kill -9 $SERVER_PID
+
+# return 1 if test did not pass
+if [ $PASSED -eq 0 ]; then
+	echo_bad "FAILED"
+	exit 1
+fi
+
+echo_good "PASSED"
+

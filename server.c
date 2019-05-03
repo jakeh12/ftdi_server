@@ -4,6 +4,14 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <signal.h>
+
+static volatile int run = 1;
+
+void interrupt_handler(int signum) {
+    run = 0;
+    exit(1);
+}
 
 #define BUFFER_SIZE 1024
 #define on_error(...) { fprintf(stderr, __VA_ARGS__); fflush(stderr); exit(1); }
@@ -11,6 +19,8 @@
 int main (int argc, char *argv[]) {
   if (argc < 2) on_error("Usage: %s [port]\n", argv[0]);
 
+  signal(SIGINT, interrupt_handler);
+  
   int port = atoi(argv[1]);
 
   int server_fd, client_fd, err;
