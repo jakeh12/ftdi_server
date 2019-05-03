@@ -1,7 +1,7 @@
 all: server
 
-server: server.c
-	gcc -o server server.c
+server: server.c spi.c
+	gcc -o server server.c spi.c
 	
 clean:
 	rm -f server
